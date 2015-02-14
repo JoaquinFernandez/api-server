@@ -7,6 +7,6 @@ Rails.application.routes.draw do
   end
 
   # namespace path_helper hackery!
-  get '/v1/sites/:url', to: 'site#show', as: :site
+  get '/v1/sites/:url', to: 'sites#show', as: :site
 
 end
