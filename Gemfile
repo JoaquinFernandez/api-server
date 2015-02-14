@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.1'
+ruby '1.9.3'
 
 gem 'rails', '4.1.5'
 gem 'pg'
@@ -9,6 +9,10 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'turbolinks'
+# For HTML parsing
+gem 'nokogiri'
+# For json response
+gem 'json'
 
 gem 'rabl'      # API builder
 gem 'oj'        # JSON parser
@@ -20,7 +24,6 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 group :development do
   gem 'powder'
-  gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
   gem 'meta_request'
   gem 'xray-rails'

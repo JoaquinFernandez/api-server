@@ -1,10 +1,10 @@
 class Api::V1::BaseController < Api::BaseController
-  before_action :set_resource, only: [:destroy, :show, :update]
+  before_action :set_resource, only: [:show, :update]
 
   # GET /api/v1/{plural_resource_name}
   def index
     plural_resource_name = "@#{resource_name.pluralize}"
-    resources = resource_class.where(query_params)
+    resources = resource_class.all
                               .page(page_params[:page])
                               .per(page_params[:page_size])
 
@@ -12,35 +12,44 @@ class Api::V1::BaseController < Api::BaseController
     respond_with instance_variable_get(plural_resource_name)
   end
 
-  # GET /api/v1/{plural_resource_name}/1
+  # GET /api/v1/{plural_resource_name}/{url}
   def show
     respond_with get_resource
   end
 
-  def create
-    set_resource(resource_class.new(resource_params))
+  # def create
+  #   set_resource(resource_class.new(resource_params))
 
-    if get_resource.save
-      render :show, status: :created, location: get_resource
-    else
-      render json: get_resource.errors, status: :unprocessable_entity
-    end
-  end
+  #   if get_resource.save
+  #     render :show, status: :created, location: get_resource
+  #   else
+  #     render json: get_resource.errors, status: :unprocessable_entity
+  #   end
+  # end
 
-  # PATCH/PUT /api/v1/{plural_resource_name}/1
   def update
-    if get_resource.update(resource_params)
-      render :show
+    # PATCH/PUT /api/v1/{plural_resource_name}/{url}
+    if resource_params
+      if update_resource(resource_params)
+        render :show
+      else
+        render json: get_resource.errors, status: :unprocessable_entity
+      end
+    # PATCH/PUT /api/v1/{plural_resource_name}
     else
-      render json: get_resource.errors, status: :unprocessable_entity
+      if update_resources
+        render :index
+      else
+        render json: get_resource.errors, status: :unprocessable_entity
+      end
     end
   end
 
   # DELETE /api/v1/{plural_resource_name}/1
-  def destroy
-    get_resource.destroy
-    head :no_content
-  end
+  # def destroy
+  #   get_resource.destroy
+  #   head :no_content
+  # end
 
   private
 
@@ -48,6 +57,19 @@ class Api::V1::BaseController < Api::BaseController
     # @return [Object]
     def get_resource
       instance_variable_get("@#{resource_name}")
+    end
+
+    # Updates the resource in the db
+    # @param resource the resource we want to update
+    # @return [Boolean]
+    def update_resource(resource)
+      # no-op everything done in subclass
+    end
+
+    # Updates all the resources in the db
+    # @return [Boolean]
+    def update_resources
+      # no-op everything done in subclass
     end
 
     # Returns the allowed parameters for searching
@@ -87,7 +109,7 @@ class Api::V1::BaseController < Api::BaseController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_resource(resource = nil)
-      resource ||= resource_class.find(params[:id])
+      resource ||= resource_class.find(params[:url])
       instance_variable_set("@#{resource_name}", resource)
     end
 end

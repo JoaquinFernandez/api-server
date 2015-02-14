@@ -1,3 +1,3 @@
-collection @users => :users
+collection @sites => :sites
 
-extends 'api/v1/users/show'
+extends 'api/v1/sites/show'
