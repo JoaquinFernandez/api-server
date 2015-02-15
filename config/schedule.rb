@@ -18,7 +18,9 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-every :minute
+
+set :output, "cron.log"
+every :minute do
 #every 1.day, :at => '4:30 am' do
-  runner "Site.update_all", :output => 'cron.log'
+  runner "Site.update_all"
 end
