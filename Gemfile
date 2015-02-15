@@ -15,8 +15,10 @@ gem 'nokogiri'
 gem 'json'
 # For TZInfo
 gem 'tzinfo-data'
-# For cron jobs
-gem 'whenever'
+# For managing the URIs
+gem 'addressable'
+# For the http/https requests
+gem 'mechanize'
 
 gem 'rabl'      # API builder
 gem 'oj'        # JSON parser
