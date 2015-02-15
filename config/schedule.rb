@@ -20,7 +20,7 @@
 # Learn more: http://github.com/javan/whenever
 
 set :output, "cron.log"
-every :minute do
+every 2.minutes do
 #every 1.day, :at => '4:30 am' do
   runner "Site.update_all"
 end
