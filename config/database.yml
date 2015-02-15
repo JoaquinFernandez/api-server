@@ -82,6 +82,4 @@ test:
 #
 production:
   <<: *default
-  database: api-server-production
-  username: cody
-  password: <%= ENV['REST-API_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
