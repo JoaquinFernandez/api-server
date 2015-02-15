@@ -13,6 +13,10 @@ gem 'turbolinks'
 gem 'nokogiri'
 # For json response
 gem 'json'
+# For TZInfo
+gem 'tzinfo-data'
+# For cron jobs
+gem 'whenever'
 
 gem 'rabl'      # API builder
 gem 'oj'        # JSON parser

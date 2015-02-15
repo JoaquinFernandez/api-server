@@ -1,6 +1,6 @@
-collection [@sites] => :sites
+object @site => :site
 
-attributes :url, :total_lines, :internal, :external
+attributes :url, :total_lines, :inline, :external
 
 node :links do |site|
   links = {}

@@ -3,18 +3,19 @@ class Api::V1::BaseController < Api::BaseController
 
   # GET /api/v1/{plural_resource_name}
   def index
-    plural_resource_name = "@#{resource_name.pluralize}"
     resources = resource_class.all
                               .page(page_params[:page])
                               .per(page_params[:page_size])
 
     instance_variable_set(plural_resource_name, resources)
+    puts instance_variable_get(plural_resource_name).class
     respond_with instance_variable_get(plural_resource_name)
   end
 
   # GET /api/v1/{plural_resource_name}/{url}
   def show
-    respond_with get_resource
+    site = resource_class.find(params[:id])
+    respond_with site
   end
 
   # def create
@@ -27,23 +28,24 @@ class Api::V1::BaseController < Api::BaseController
   #   end
   # end
 
-  def update
-    # PATCH/PUT /api/v1/{plural_resource_name}/{url}
-    if resource_params
-      if update_resource(resource_params)
-        render :show
-      else
-        render json: get_resource.errors, status: :unprocessable_entity
-      end
-    # PATCH/PUT /api/v1/{plural_resource_name}
-    else
-      if update_resources
-        render :index
-      else
-        render json: get_resource.errors, status: :unprocessable_entity
-      end
-    end
-  end
+  # def update
+  #   # PATCH/PUT /api/v1/{plural_resource_name}/{url}
+  #   puts params[:url]
+  #   if params[:url]
+  #     if update_resource(resource_class.find_or_create_by("url" => params[:url]))
+  #       render :show
+  #     else
+  #       render json: get_resource.errors, status: :unprocessable_entity
+  #     end
+  #   # PATCH/PUT /api/v1/{plural_resource_name}
+  #   else
+  #     if update_resources
+  #       render :index
+  #     else
+  #       render json: get_resource.errors, status: :unprocessable_entity
+  #     end
+  #   end
+  # end
 
   # DELETE /api/v1/{plural_resource_name}/1
   # def destroy
@@ -57,19 +59,6 @@ class Api::V1::BaseController < Api::BaseController
     # @return [Object]
     def get_resource
       instance_variable_get("@#{resource_name}")
-    end
-
-    # Updates the resource in the db
-    # @param resource the resource we want to update
-    # @return [Boolean]
-    def update_resource(resource)
-      # no-op everything done in subclass
-    end
-
-    # Updates all the resources in the db
-    # @return [Boolean]
-    def update_resources
-      # no-op everything done in subclass
     end
 
     # Returns the allowed parameters for searching
@@ -98,6 +87,12 @@ class Api::V1::BaseController < Api::BaseController
       @resource_name ||= self.controller_name.singularize
     end
 
+    # The plural name for the resource class based on the controller
+    # @return [String]
+    def plural_resource_name
+      @plural_resource_name ||= "@#{resource_name.pluralize}"
+    end
+
     # Only allow a trusted parameter "white list" through.
     # If a single resource is loaded for #create or #update,
     # then the controller for the resource must implement
@@ -109,7 +104,7 @@ class Api::V1::BaseController < Api::BaseController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_resource(resource = nil)
-      resource ||= resource_class.find(params[:url])
+      resource ||= resource_class.find_by("url" => :id)
       instance_variable_set("@#{resource_name}", resource)
     end
 end

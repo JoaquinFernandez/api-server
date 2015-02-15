@@ -11,27 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141008172700) do
+ActiveRecord::Schema.define do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "dreams", force: true do |t|
-    t.datetime "date"
-    t.string   "category"
-    t.text     "description"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "dreams", ["user_id"], name: "index_dreams_on_user_id", using: :btree
-
-  create_table "users", force: true do |t|
-    t.string   "name"
-    t.integer  "age"
-    t.string   "city"
-    t.string   "state"
+  create_table :sites, force: true do |t|
+    t.string   "url"
+    t.integer  "total_lines"
+    t.integer  "inline"
+    t.integer  "external"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
