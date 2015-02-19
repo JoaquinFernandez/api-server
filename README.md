@@ -9,7 +9,7 @@ What's inside of the app
 --------
 ####Models
 ```ruby
-Site :url, :total_lines, :internal, :external
+Site :url, :total_lines, :inline, :external
 ```
 
 ####Views
