@@ -1,4 +1,4 @@
-rest-api
+api-server
 ========
 
 Based on project [rest-api](https://github.com/CodyStringham/rest-api).
@@ -24,16 +24,9 @@ Kaminari has a default page size of 25, to override this pass in a `page` and/or
 http://api.rest-api.dev/v1/sites.json?page=1&page_size=10
 ```
 
-####Query params
-Each controller has permitted query params, by default they are all allowed:
-```
-http://api.rest-api.dev/v1/sites/google.com
-```
-
-
 Lets make a call!
 --------
 #### HTTParty Get
 ```ruby
-HTTParty.get 'http://api.rest-api.dev/v1/sites.json'
+HTTParty.get 'http://api.rest-api.dev/api/v1/sites'
 ```
