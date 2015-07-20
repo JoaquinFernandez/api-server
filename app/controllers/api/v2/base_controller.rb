@@ -3,6 +3,13 @@ class Api::V2::BaseController < Api::BaseController
 
   # GET /api/v2/ips
   def create
+    # Make sure that the request contains the key
+    request_secret_key = JSON.parse(request.body.read)
+    secret_key = Rails.application.secrets.http_validation_key
+    puts secret_key
+    if (request_secret_key["secret_key"] != secret_key)
+      render json: get_resource.errors, status: :unprocessable_entity
+    end
     #Get the IP from the request
     remote_ip = env['HTTP_X_FORWARDED_FOR'] || env['REMOTE_ADDR']
     remote_ip = remote_ip.scan(/[\d.]+/).first

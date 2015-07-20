@@ -7,10 +7,9 @@ class Api::V2::IpsController < Api::V2::BaseController
   private
 
     def ip_params
-      params.require(:ip)
+      params.require(:secret_key)
     end
 
     def query_params
-      params.permit(:ip)
     end
 end
