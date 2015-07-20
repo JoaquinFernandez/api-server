@@ -2,11 +2,14 @@ class Api::V2::BaseController < Api::BaseController
   before_action :set_resource, only: [:show, :create]
 
   # GET /api/v2/ips
-  def create  
-    ip_record = resource_class.where(:ip => resource_params).first_or_create;
+  def create
+    #Get the IP from the request
+    remote_ip = env['HTTP_X_FORWARDED_FOR'] || env['REMOTE_ADDR']
+    remote_ip = remote_ip.scan(/[\d.]+/).first
+    ip_record = resource_class.where(:ip => remote_ip).first_or_create;
+    # This will update the updated_at field of the record
     ip_record.touch
     set_resource(ip_record)
-
     if get_resource.save
       render :show, status: :created
     else
@@ -16,7 +19,7 @@ class Api::V2::BaseController < Api::BaseController
 
   # GET /api/v2/ips
   def index
-    respond_with resource_class.all.order(:created_at).first
+    respond_with resource_class.all.order(:updated_at).first
   end
 
   private
