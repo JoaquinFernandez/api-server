@@ -25,4 +25,9 @@ ActiveRecord::Schema.define do
     t.datetime "updated_at"
   end
 
+  create_table :ips, force: true do |t|
+    t.string   "ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 end
