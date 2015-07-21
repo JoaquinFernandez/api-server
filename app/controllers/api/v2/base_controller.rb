@@ -26,7 +26,7 @@ class Api::V2::BaseController < Api::BaseController
 
   # GET /api/v2/ips
   def index
-    respond_with resource_class.all.order(:updated_at).first
+    respond_with resource_class.all.order(:updated_at).last
   end
 
   private
