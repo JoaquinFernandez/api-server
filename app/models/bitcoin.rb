@@ -25,7 +25,7 @@ class Bitcoin < ActiveRecord::Base
 	  end
 	end
 
-	bitcoin_value_target = 400
+	bitcoin_value_target = 500
 	uri = URI('https://api.coinbase.com/v2/prices/buy')
 
 	Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
@@ -37,10 +37,14 @@ class Bitcoin < ActiveRecord::Base
 	  currency = data['data']['currency'].to_s
 	  puts "Price: $#{price} (#{currency})"
 	  Bitcoin.create(price: price, currency: currency)
-
 	  if price < bitcoin_value_target
-	    puts "Price ($#{price}) below target ($#{bitcoin_value_target}). Sending alert."
-	    send_notice ENV['PERSONAL_EMAIL'], price
+	  	lastBitcoin = Bitcoin.first(:order => 'created_at DESC')
+	  	if (lastBitcoin.price < bitcoin_value_target)
+	  		puts "Price below target, but mail already sent."
+	  	else
+		    puts "Price ($#{price}) below target ($#{bitcoin_value_target}). Sending alert."
+		    send_notice ENV['PERSONAL_EMAIL'], price
+		end
 	  else
 	    puts "Price ($#{price}) above target ($#{bitcoin_value_target}). Doing nothing."
 	  end
