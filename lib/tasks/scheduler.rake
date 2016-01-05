@@ -4,3 +4,8 @@ task :update_sites => :environment do
   Site.update_all
   puts "done."
 end
+task :bitcoin_value => :environment do
+  puts "Checking bitcoin value"
+  Bitcoin.check_value
+  puts "done."
+end

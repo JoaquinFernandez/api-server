@@ -11,23 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define do
+ActiveRecord::Schema.define(version: 20160105202909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table :sites, force: true do |t|
-    t.string   "url"
-    t.integer  "total_lines"
-    t.integer  "inline"
-    t.integer  "external"
+  create_table "bitcoins", force: true do |t|
+    t.float    "price"
+    t.string   "currency"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table :ips, force: true do |t|
-    t.string   "ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 end
