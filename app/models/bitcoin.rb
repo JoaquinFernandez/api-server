@@ -2,8 +2,6 @@ require 'net/http'
 require 'json'
 require 'mail'
 
-bitcoin_value_target = 400
-
 class Bitcoin < ActiveRecord::Base
   def self.check_value
   	Mail.defaults do
@@ -27,6 +25,7 @@ class Bitcoin < ActiveRecord::Base
 	  end
 	end
 
+	bitcoin_value_target = 400
 	uri = URI('https://api.coinbase.com/v2/prices/buy')
 
 	Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
